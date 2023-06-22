@@ -6,15 +6,32 @@ namespace testBotAsp
 {
     public class MessageUpdate
     {
-        public static async Task Mes(ITelegramBotClient botClient, Update update, CancellationToken cancellation)
+        public int check = 0;
+        public async Task Mes(ITelegramBotClient botClient, Update update, CancellationToken cancellation)
         {
             var up = update?.Message?.Text;
             var message = update?.Message;
 
+            if (update?.Message?.Contact != null)
+            {
+                check = 1;
+                await botClient.SendTextMessageAsync(message.Chat.Id, "Введите табельный номер");
+            }
+            else if (check == 1)
+            {
+                check = 2;
+                await botClient.SendTextMessageAsync(message.Chat.Id, "Введите ФИО");
+            }
+            else if (check == 2)
+            {
+                check = 0;
+                await botClient.SendTextMessageAsync(message.Chat.Id, "Спасибо за регистрацию", replyMarkup: Buttons.GetButtons3());
+            }
+
             switch (up)
             {
                 case "/start":
-                    await botClient.SendTextMessageAsync(message.Chat.Id, "Привет, я бот Киберкот, цифровой помощник киберметаллурга.  В этом боте ты узнаешь, чем так важна твоя работа, какая миссия каждый день вдохновляет нас делать свое дело и что мы больше всего ценим в работе и в друг друге. Для начала давай познакомимся:", replyMarkup: Buttons.GetButtons2());
+                    await botClient.SendTextMessageAsync(message.Chat.Id, "Привет, я бот Киберкот, цифровой помощник киберметаллурга.  В этом боте ты узнаешь, чем так важна твоя работа, какая миссия каждый день вдохновляет нас делать свое дело и что мы больше всего ценим в работе и в друг друге. Для начала давай познакомимся:", replyMarkup: Buttons.GetButtons());
                     break;
 
                 case "Регистрация":

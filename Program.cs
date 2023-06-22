@@ -9,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 var botClient = new TelegramBotClient("6104982128:AAFlG61y44DFOegDeIbslhSOSyEAK8WuU9U");
 using var cts = new CancellationTokenSource();
+List<MessageUpdate> mu = new List<MessageUpdate>();
+List<string> users = new List<string>();
 var receiverOptions = new ReceiverOptions
 {
     AllowedUpdates = Array.Empty<UpdateType>() // receive all update types
@@ -38,9 +40,21 @@ async Task HandleUpdateAsync(ITelegramBotClient client, Update update, Cancellat
     Console.WriteLine($"{update?.Message?.Chat.Username} | {update?.Message?.Text} | {update?.Message?.Contact?.PhoneNumber}");
     if (update?.Type == UpdateType.Message && update.Message != null)
     {
-        await MessageUpdate.Mes(client, update, token);
+        for (int a = 0; a < users.Count; a++)
+        {
+            if (users[a] == update?.Message?.Chat.Username)
+            {
+                mu[a].Mes(client, update, token);
+                return;
+            }
+        }
+        mu.Add(new MessageUpdate());
+        users.Add(update?.Message?.Chat.Username);
+        mu[mu.Count() - 1].Mes(client, update, token);
     }
 }
+
+Console.ReadLine();
 
 
 // Add services to the container.
