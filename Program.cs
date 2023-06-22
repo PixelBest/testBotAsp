@@ -56,7 +56,7 @@ using testBotAsp;
         }
     }
 
-    Console.ReadLine();
+    
 
 
     // Add services to the container.
