@@ -54,15 +54,6 @@ async Task HandleUpdateAsync(ITelegramBotClient client, Update update, Cancellat
         await mu[mu.Count() - 1].Mes(client, update, token);
     }
 }
-builder.WebHost.ConfigureAppConfiguration((context, config) =>
-{
-    AppDomain.CurrentDomain.ProcessExit += (s, e) => {
-        botClient.StartReceiving(HandleUpdateAsync,
-                            HandlePollingErrorAsync,
-                            receiverOptions,
-                            cts.Token);
-    };
-});
 
 
 
@@ -89,3 +80,10 @@ app.UseAuthorization();
 app.MapRazorPages();
 
 app.Run();
+
+while (true)
+{
+
+
+    Thread.Sleep(10000);
+}
