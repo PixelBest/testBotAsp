@@ -5,8 +5,8 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using testBotAsp;
 
-while (true)
-{
+/*while (true)
+{*/
     var builder = WebApplication.CreateBuilder(args);
 
     var botClient = new TelegramBotClient("6104982128:AAFlG61y44DFOegDeIbslhSOSyEAK8WuU9U");
@@ -42,7 +42,8 @@ while (true)
         Console.WriteLine($"{update?.Message?.Chat.Username} | {update?.Message?.Text} | {update?.Message?.Contact?.PhoneNumber}");
         if (update?.Type == UpdateType.Message && update.Message != null)
         {
-            for (int a = 0; a < users.Count; a++)
+        await Task.Delay(1000);
+        for (int a = 0; a < users.Count; a++)
             {
                 if (users[a] == update?.Message?.Chat.Username)
                 {
@@ -82,4 +83,4 @@ while (true)
     app.MapRazorPages();
 
     app.Run();
-}
+/*}*/
