@@ -80,11 +80,9 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 
-app.Run();
 
 while (true)
 {
-
+    app.Run();
     Thread.Sleep(10000);
-    Process.Start("https://tgbotasp.onrender.com/");
 }
