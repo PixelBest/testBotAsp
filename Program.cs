@@ -5,8 +5,7 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using testBotAsp;
 
-while (true)
-{
+
     var builder = WebApplication.CreateBuilder(args);
 
     var botClient = new TelegramBotClient("6104982128:AAFlG61y44DFOegDeIbslhSOSyEAK8WuU9U");
@@ -36,7 +35,8 @@ while (true)
         return Task.CompletedTask;
     }
 
-
+while (true)
+{
     async Task HandleUpdateAsync(ITelegramBotClient client, Update update, CancellationToken token)
     {
         Console.WriteLine($"{update?.Message?.Chat.Username} | {update?.Message?.Text} | {update?.Message?.Contact?.PhoneNumber}");
@@ -57,30 +57,29 @@ while (true)
         }
     }
 
-    
+}    
 
 
-    // Add services to the container.
-    builder.Services.AddRazorPages();
+// Add services to the container.
+builder.Services.AddRazorPages();
 
-    var app = builder.Build();
+var app = builder.Build();
 
-    // Configure the HTTP request pipeline.
-    if (!app.Environment.IsDevelopment())
-    {
-        app.UseExceptionHandler("/Error");
-        // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-        app.UseHsts();
-    }
-
-    app.UseHttpsRedirection();
-    app.UseStaticFiles();
-
-    app.UseRouting();
-
-    app.UseAuthorization();
-
-    app.MapRazorPages();
-
-    app.Run();
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
 }
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseAuthorization();
+
+app.MapRazorPages();
+
+app.Run();
