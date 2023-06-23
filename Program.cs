@@ -6,58 +6,55 @@ using Telegram.Bot.Types.Enums;
 using testBotAsp;
 
 
-    var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
-    var botClient = new TelegramBotClient("6104982128:AAFlG61y44DFOegDeIbslhSOSyEAK8WuU9U");
-    using var cts = new CancellationTokenSource();
-    List<MessageUpdate> mu = new List<MessageUpdate>();
-    List<string> users = new List<string>();
-    var receiverOptions = new ReceiverOptions
-    {
-        AllowedUpdates = Array.Empty<UpdateType>() // receive all update types
-
-    };
-    botClient.StartReceiving(HandleUpdateAsync,
-                             HandlePollingErrorAsync,
-                             receiverOptions,
-                             cts.Token);
-
-    Task HandlePollingErrorAsync(ITelegramBotClient client, Exception exception, CancellationToken token)
-    {
-        var ErrorMessage = exception switch
-        {
-            ApiRequestException apiRequestException
-                => $"Telegram API Error:\n[{apiRequestException.ErrorCode}]\n{apiRequestException.Message}",
-            _ => exception.ToString()
-        };
-
-        Console.WriteLine(ErrorMessage);
-        return Task.CompletedTask;
-    }
-
-while (true)
+var botClient = new TelegramBotClient("6104982128:AAFlG61y44DFOegDeIbslhSOSyEAK8WuU9U");
+using var cts = new CancellationTokenSource();
+List<MessageUpdate> mu = new List<MessageUpdate>();
+List<string> users = new List<string>();
+var receiverOptions = new ReceiverOptions
 {
-    async Task HandleUpdateAsync(ITelegramBotClient client, Update update, CancellationToken token)
-    {
-        Console.WriteLine($"{update?.Message?.Chat.Username} | {update?.Message?.Text} | {update?.Message?.Contact?.PhoneNumber}");
-        if (update?.Type == UpdateType.Message && update.Message != null)
-        {
-        await Task.Delay(1000);
-        for (int a = 0; a < users.Count; a++)
-            {
-                if (users[a] == update?.Message?.Chat.Username)
-                {
-                    mu[a].Mes(client, update, token);
-                    return;
-                }
-            }
-            mu.Add(new MessageUpdate());
-            users.Add(update?.Message?.Chat.Username);
-            mu[mu.Count() - 1].Mes(client, update, token);
-        }
-    }
+    AllowedUpdates = Array.Empty<UpdateType>() // receive all update types
 
-}    
+};
+botClient.StartReceiving(HandleUpdateAsync,
+                            HandlePollingErrorAsync,
+                            receiverOptions,
+                            cts.Token);
+
+Task HandlePollingErrorAsync(ITelegramBotClient client, Exception exception, CancellationToken token)
+{
+    var ErrorMessage = exception switch
+    {
+        ApiRequestException apiRequestException
+            => $"Telegram API Error:\n[{apiRequestException.ErrorCode}]\n{apiRequestException.Message}",
+        _ => exception.ToString()
+    };
+
+    Console.WriteLine(ErrorMessage);
+    return Task.CompletedTask;
+}
+
+
+async Task HandleUpdateAsync(ITelegramBotClient client, Update update, CancellationToken token)
+{
+    Console.WriteLine($"{update?.Message?.Chat.Username} | {update?.Message?.Text} | {update?.Message?.Contact?.PhoneNumber}");
+    if (update?.Type == UpdateType.Message && update.Message != null)
+    {
+        for (int a = 0; a < users.Count; a++)
+        {
+            if (users[a] == update?.Message?.Chat.Username)
+            {
+                await mu[a].Mes(client, update, token);
+                return;
+            }
+        }
+        mu.Add(new MessageUpdate());
+        users.Add(update?.Message?.Chat.Username);
+        await mu[mu.Count() - 1].Mes(client, update, token);
+    }
+}
+  
 
 
 // Add services to the container.
