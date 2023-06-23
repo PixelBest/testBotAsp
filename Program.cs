@@ -5,8 +5,8 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using testBotAsp;
 
-/*while (true)
-{*/
+while (true)
+{
     var builder = WebApplication.CreateBuilder(args);
 
     var botClient = new TelegramBotClient("6104982128:AAFlG61y44DFOegDeIbslhSOSyEAK8WuU9U");
@@ -83,4 +83,4 @@ using testBotAsp;
     app.MapRazorPages();
 
     app.Run();
-/*}*/
+}
