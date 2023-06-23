@@ -83,6 +83,11 @@ app.MapRazorPages();
 
 while (true)
 {
+    await botClient.CloseAsync();
+    botClient.StartReceiving(HandleUpdateAsync,
+                            HandlePollingErrorAsync,
+                            receiverOptions,
+                            cts.Token);
     app.Run();
     Thread.Sleep(10000);
 }
