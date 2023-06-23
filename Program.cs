@@ -57,7 +57,6 @@ async Task HandleUpdateAsync(ITelegramBotClient client, Update update, Cancellat
 builder.WebHost.ConfigureAppConfiguration((context, config) =>
 {
     AppDomain.CurrentDomain.ProcessExit += (s, e) => {
-        botClient.CloseAsync(cts.Token);
         botClient.StartReceiving(HandleUpdateAsync,
                             HandlePollingErrorAsync,
                             receiverOptions,
