@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
@@ -84,6 +85,6 @@ app.Run();
 while (true)
 {
 
-
     Thread.Sleep(10000);
+    Process.Start("https://tgbotasp.onrender.com/");
 }
