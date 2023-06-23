@@ -1,6 +1,9 @@
 ﻿using Telegram.Bot.Types.ReplyMarkups;
 using Telegram.Bot.Types;
 using Telegram.Bot;
+using System.Diagnostics;
+using Timer = System.Timers.Timer;
+using System.Timers;
 
 namespace testBotAsp
 {
@@ -32,6 +35,17 @@ namespace testBotAsp
             {
                 case "/start":
                     await botClient.SendTextMessageAsync(message.Chat.Id, "Привет, я бот Киберкот, цифровой помощник киберметаллурга.  В этом боте ты узнаешь, чем так важна твоя работа, какая миссия каждый день вдохновляет нас делать свое дело и что мы больше всего ценим в работе и в друг друге. Для начала давай познакомимся:", replyMarkup: Buttons.GetButtons());
+                    break;
+                
+                case "timer":
+                    Timer timer = new Timer(20000);
+                    timer.Elapsed += async delegate (object sender, ElapsedEventArgs e)
+                    {
+                        await botClient.CloseAsync();
+                        Program.Bot();
+                    };
+                    timer.AutoReset = true;
+                    timer.Enabled = true;
                     break;
 
                 case "Регистрация":
