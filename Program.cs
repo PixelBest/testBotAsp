@@ -13,9 +13,7 @@ using testBotAsp;
 var builder = WebApplication.CreateBuilder();
 List<MessageUpdate> mu = new List<MessageUpdate>();
 List<string> users = new List<string>();
-Timer timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMinutes(10));
-
-void DoWork(object? state)
+while(true)
 {
     var botClient = new TelegramBotClient("6104982128:AAFlG61y44DFOegDeIbslhSOSyEAK8WuU9U");
     using var cts = new CancellationTokenSource();
@@ -63,6 +61,8 @@ void DoWork(object? state)
         }
     }
 }
+
+
 
 // Add services to the container.
 builder.Services.AddRazorPages();
