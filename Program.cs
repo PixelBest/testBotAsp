@@ -13,10 +13,21 @@ using testBotAsp;
 var builder = WebApplication.CreateBuilder();
 List<MessageUpdate> mu = new List<MessageUpdate>();
 List<string> users = new List<string>();
-while(true)
+CancellationTokenSource cts = new CancellationTokenSource();
+Timer timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(10));
+
+void DoWork(object? state)
 {
     var botClient = new TelegramBotClient("6104982128:AAFlG61y44DFOegDeIbslhSOSyEAK8WuU9U");
-    using var cts = new CancellationTokenSource();
+    try
+    {
+        cts.Cancel();
+        cts = new CancellationTokenSource();
+    }
+    catch
+    {
+        cts = new CancellationTokenSource();
+    }
     var receiverOptions = new ReceiverOptions
     {
         AllowedUpdates = Array.Empty<UpdateType>() // receive all update types
@@ -29,7 +40,6 @@ while(true)
 
     Task HandlePollingErrorAsync(ITelegramBotClient client, Exception exception, CancellationToken token)
     {
-        cts.Cancel();
         var ErrorMessage = exception switch
         {
             ApiRequestException apiRequestException
@@ -62,8 +72,6 @@ while(true)
     }
 }
 
-
-
 // Add services to the container.
 builder.Services.AddRazorPages();
 
@@ -86,3 +94,5 @@ app.UseAuthorization();
 app.MapRazorPages();
 
 app.Run();
+
+Console.WriteLine();
